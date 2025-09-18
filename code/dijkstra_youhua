@@ -1,0 +1,48 @@
+#include <iostream>
+#include <cstring>
+#include <algorithm>
+#include <queue>
+using namespace std;
+typedef pair<int,int>PII;
+const int N=150010;
+int h[N],e[N],w[N],dist[N],ne[N];
+bool st[N];
+int idx,a,b,c,n,m;
+void add(int a,int b,int c){
+    e[idx]=b;
+    w[idx]=c;
+    ne[idx]=h[a];
+    h[a]=idx++;
+}
+void dijkstra(){
+    memset(dist,0x3f,sizeof(dist));
+    dist[1]=0;
+    priority_queue<PII, vector<PII>, greater<PII>> heap;
+    heap.push({0,1});
+    while(heap.size()){
+        auto k=heap.top();
+        heap.pop();
+        int t=k.second,distance=k.first;
+        if(st[t]) continue;
+        st[t]=true;
+        for(int i=h[t];i!=-1;i=ne[i]){
+            int j=e[i];
+            if(dist[j]>distance+w[i]){
+               dist[j]=distance+w[i];
+               heap.push({dist[j],j});
+        }
+    }
+}
+}
+int main(){
+    memset(h,-1,sizeof(h));
+    cin>>n>>m;
+    while(m--){
+        cin>>a>>b>>c;
+        add(a,b,c);
+    }
+    dijkstra();
+    if(dist[n]!=0x3f3f3f3f) cout<<dist[n]<<endl;
+    else cout<<"-1"<<endl;
+    return 0;
+}
